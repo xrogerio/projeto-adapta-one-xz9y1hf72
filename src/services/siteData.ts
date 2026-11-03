@@ -9,6 +9,7 @@ import { SITE_CHROME } from '@/data/siteChrome'
 
 export interface CharacterRow {
   id: string
+  slug: string
   name: string
   ageOrRole: string
   description: string
@@ -152,10 +153,10 @@ export interface SiteData {
   }
 }
 
-/** Monta a URL pública de um arquivo PocketBase da coleção informada. */
-export function filesUrl(collectionName: string, filename: string): string {
-  if (!filename) return ''
-  return pb.files.getURL(collectionName, filename)
+/** Monta a URL pública de um arquivo PocketBase (coleção + registro + arquivo). */
+export function filesUrl(collectionName: string, recordId: string, filename: string): string {
+  if (!filename || !recordId) return ''
+  return pb.files.getURL({ collectionName: collectionName, id: recordId }, filename)
 }
 
 function asString(value: unknown, fallback: string): string {
@@ -181,7 +182,7 @@ function asObjectArray(value: unknown, fallback: unknown[]): Record<string, unkn
 }
 
 /** SiteData completo montado a partir do conteúdo estático (fallback). */
-function buildStatic(): SiteData {
+export function buildStaticSiteData(): SiteData {
   const d = SITE_DATA
   return {
     menu: {
@@ -242,6 +243,7 @@ function buildStatic(): SiteData {
     },
     characters: d.characters.map((c, i) => ({
       id: 'static-' + i,
+      slug: c.id,
       name: c.name,
       ageOrRole: c.ageOrRole,
       description: c.description,
@@ -316,7 +318,7 @@ function buildStatic(): SiteData {
 
 /** Busca todo o conteúdo do site no PocketBase; em qualquer falha devolve o fallback estático. */
 export async function loadSiteData(): Promise<SiteData> {
-  const base = buildStatic()
+  const base = buildStaticSiteData()
   try {
     const results = await Promise.all([
       pb
@@ -410,7 +412,7 @@ export async function loadSiteData(): Promise<SiteData> {
       bannerBadge: asString(menuRec.bannerBadge, base.menu.bannerBadge),
       brandTitle: asString(menuRec.brandTitle, base.menu.brandTitle),
       brandSubtitle: asString(menuRec.brandSubtitle, base.menu.brandSubtitle),
-      logo: filesUrl('site_menu', asString(menuRec.logo, '')),
+      logo: filesUrl('site_menu', asString(menuRec.id, ''), asString(menuRec.logo, '')),
       ctaLabel: asString(menuRec.ctaLabel, base.menu.ctaLabel),
       ctaUrl: asString(menuRec.ctaUrl, base.menu.ctaUrl),
       items: menuItems.length ? menuItems : base.menu.items,
@@ -420,7 +422,7 @@ export async function loadSiteData(): Promise<SiteData> {
     base.footer = {
       brandTitle: asString(footerRec.brandTitle, base.footer.brandTitle),
       brandSubtitle: asString(footerRec.brandSubtitle, base.footer.brandSubtitle),
-      logo: filesUrl('site_footer', asString(footerRec.logo, '')),
+      logo: filesUrl('site_footer', asString(footerRec.id, ''), asString(footerRec.logo, '')),
       description: asString(footerRec.description, base.footer.description),
       tagline: asString(footerRec.tagline, base.footer.tagline),
       navigationTitle: asString(footerRec.navigationTitle, base.footer.navigationTitle),
@@ -448,7 +450,7 @@ export async function loadSiteData(): Promise<SiteData> {
       primaryCtaUrl: asString(heroRec.primaryCtaUrl, base.hero.primaryCtaUrl),
       secondaryCtaLabel: asString(heroRec.secondaryCtaLabel, base.hero.secondaryCtaLabel),
       secondaryCtaHref: asString(heroRec.secondaryCtaHref, base.hero.secondaryCtaHref),
-      image: filesUrl('hero', asString(heroRec.image, '')),
+      image: filesUrl('hero', asString(heroRec.id, ''), asString(heroRec.image, '')),
     }
 
     // ---- Sobre a série --------------------------------------------------------
@@ -541,6 +543,7 @@ export async function loadSiteData(): Promise<SiteData> {
     const charRows: CharacterRow[] = ((charactersRaw as Array<Record<string, unknown>>) ?? []).map(
       (r, i) => ({
         id: asString(r.id, 'static-' + i),
+        slug: asString(r.slug, ''),
         name: asString(r.name, ''),
         ageOrRole: asString(r.ageOrRole, ''),
         description: asString(r.description, ''),

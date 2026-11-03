@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Outlet, Link, useLocation } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import {
   Menu,
   X,
-  Play,
-  Heart,
   Youtube,
   Instagram,
   Facebook,
@@ -14,24 +12,56 @@ import {
   Tv,
   Briefcase,
   Sparkles,
+  Heart,
 } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import useSiteData from '@/hooks/useSiteData'
+import { renderBrandTitle } from '@/components/brandTitle'
 
-const NAV_LINKS = [
-  { label: 'Início', href: '#inicio', icon: Compass },
-  { label: 'Sobre a série', href: '#sobre', icon: Sparkles },
-  { label: 'Personagens', href: '#personagens', icon: Users },
-  { label: 'Episódios', href: '#episodios', icon: Tv },
-  { label: 'Trilha sonora', href: '#musicas', icon: Music2 },
-  { label: 'Siga a série', href: '#redes', icon: Heart },
-  { label: 'Mercado', href: '#mercado', icon: Briefcase },
-]
+// Ícones possíveis dos itens de menu (nome vindo do painel admin -> ícone lucide)
+const NAV_ICONS: Record<string, LucideIcon> = {
+  compass: Compass,
+  sparkles: Sparkles,
+  users: Users,
+  tv: Tv,
+  music: Music2,
+  heart: Heart,
+  briefcase: Briefcase,
+}
+
+// Ícones das redes sociais do rodapé
+const SOCIAL_ICONS: Record<string, LucideIcon> = {
+  youtube: Youtube,
+  instagram: Instagram,
+  facebook: Facebook,
+}
+
+const SOCIAL_COLORS: Record<string, { box: string; hover: string; title: string }> = {
+  youtube: {
+    box: 'bg-red-600/20 text-red-500 group-hover:bg-red-600 group-hover:text-white',
+    hover: 'hover:text-red-400',
+    title: '',
+  },
+  instagram: {
+    box: 'bg-pink-600/20 text-pink-500 group-hover:bg-pink-600 group-hover:text-white',
+    hover: 'hover:text-pink-400',
+    title: '',
+  },
+  facebook: {
+    box: 'bg-blue-600/20 text-blue-500 group-hover:bg-blue-600 group-hover:text-white',
+    hover: 'hover:text-blue-400',
+    title: '',
+  },
+}
 
 export default function Layout() {
+  const site = useSiteData()
+  const { menu, footer, social } = site
+
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('inicio')
-  const location = useLocation()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -86,14 +116,17 @@ export default function Layout() {
     }
   }
 
+  const navItems = menu.items
+  const instagramLink = social.links.find((l) => l.platform.toLowerCase().includes('insta'))
+
   return (
     <div className="flex flex-col min-h-screen text-slate-900 bg-slate-50 selection:bg-sky-200 selection:text-sky-900">
       {/* Top Antarctic Banner - Snow/Warmth vibe */}
       <div className="bg-gradient-to-r from-sky-900 via-sky-800 to-indigo-900 text-sky-100 text-xs py-1.5 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2 select-none z-50">
         <span className="text-amber-300">❄️</span>
-        <span>Na ponta do mundo, a esperança nunca congela!</span>
+        <span>{menu.bannerTagline}</span>
         <span className="hidden sm:inline text-sky-300/70">·</span>
-        <span className="hidden sm:inline text-sky-200">Série infantil de animação 3D</span>
+        <span className="hidden sm:inline text-sky-200">{menu.bannerBadge}</span>
         <span className="text-amber-300">🐧</span>
       </div>
 
@@ -113,23 +146,31 @@ export default function Layout() {
             className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-sky-400 rounded-full"
           >
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-sky-500 via-sky-400 to-amber-400 p-0.5 shadow-md group-hover:scale-105 transition-transform">
-              <div className="w-full h-full bg-slate-900 rounded-[14px] flex items-center justify-center text-xl">
-                🐧
-              </div>
+              {menu.logo ? (
+                <img
+                  src={menu.logo}
+                  alt={menu.brandTitle}
+                  className="w-full h-full rounded-[14px] object-cover bg-slate-900"
+                />
+              ) : (
+                <div className="w-full h-full bg-slate-900 rounded-[14px] flex items-center justify-center text-xl">
+                  🐧
+                </div>
+              )}
             </div>
             <div className="flex flex-col">
               <span className="font-heading font-bold text-lg sm:text-xl leading-tight text-slate-900 group-hover:text-sky-600 transition-colors tracking-tight">
-                FREDDIE <span className="text-orange-500">&</span> LOLLA
+                {renderBrandTitle(menu.brandTitle)}
               </span>
               <span className="text-[10px] sm:text-xs text-slate-500 font-semibold uppercase tracking-wider">
-                Aventuras na Baía Quente
+                {menu.brandSubtitle}
               </span>
             </div>
           </a>
 
           {/* Desktop Nav Links */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-            {NAV_LINKS.map((link) => {
+            {navItems.map((link) => {
               const isActive = activeSection === link.href.replace('#', '')
               return (
                 <a
@@ -158,13 +199,9 @@ export default function Layout() {
               size="sm"
               className="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all px-4 sm:px-5 gap-1.5 text-xs sm:text-sm"
             >
-              <a
-                href="https://www.youtube.com/channel/UCE8XJTPjM16alpIZUPM5DXg"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href={menu.ctaUrl} target="_blank" rel="noopener noreferrer">
                 <Youtube className="w-4 h-4 fill-white" />
-                <span className="hidden sm:inline">Assistir no</span> YouTube
+                <span>{menu.ctaLabel}</span>
               </a>
             </Button>
 
@@ -183,8 +220,8 @@ export default function Layout() {
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white/98 backdrop-blur-xl border-b border-sky-100 px-4 pt-3 pb-6 shadow-xl animate-fade-in">
             <nav className="flex flex-col gap-1.5">
-              {NAV_LINKS.map((link) => {
-                const Icon = link.icon
+              {navItems.map((link) => {
+                const Icon = NAV_ICONS[link.icon] ?? Compass
                 const isActive = activeSection === link.href.replace('#', '')
                 return (
                   <a
@@ -206,24 +243,26 @@ export default function Layout() {
 
             <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-2">
               <a
-                href="https://www.youtube.com/channel/UCE8XJTPjM16alpIZUPM5DXg"
+                href={menu.ctaUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-2 py-3 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-bold text-sm shadow-md"
               >
                 <Youtube className="w-5 h-5 fill-white" />
-                Assistir no YouTube
+                {menu.ctaLabel}
               </a>
-              <div className="flex items-center justify-center gap-4 text-slate-500 pt-2 text-sm">
-                <a
-                  href="https://www.instagram.com/freddielolla/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 hover:text-pink-600"
-                >
-                  <Instagram className="w-4 h-4" /> @freddielolla
-                </a>
-              </div>
+              {instagramLink && (
+                <div className="flex items-center justify-center gap-4 text-slate-500 pt-2 text-sm">
+                  <a
+                    href={instagramLink.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 hover:text-pink-600"
+                  >
+                    <Instagram className="w-4 h-4" /> {instagramLink.handle}
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -245,31 +284,38 @@ export default function Layout() {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-400 to-amber-400 p-0.5 shadow-md">
-                  <div className="w-full h-full bg-slate-900 rounded-[14px] flex items-center justify-center text-xl">
-                    🐧
-                  </div>
+                  {footer.logo ? (
+                    <img
+                      src={footer.logo}
+                      alt={footer.brandTitle}
+                      className="w-full h-full rounded-[14px] object-cover bg-slate-900"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-slate-900 rounded-[14px] flex items-center justify-center text-xl">
+                      🐧
+                    </div>
+                  )}
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-lg text-white">FREDDIE & LOLLA</h3>
-                  <p className="text-xs text-sky-400 font-medium">Aventuras na Baía Quente</p>
+                  <h3 className="font-heading font-bold text-lg text-white">
+                    {renderBrandTitle(footer.brandTitle)}
+                  </h3>
+                  <p className="text-xs text-sky-400 font-medium">{footer.brandSubtitle}</p>
                 </div>
               </div>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                O caos fofo de dois irmãos pinguins cuidando de três bebês trigêmeos na Antártica.
-                Série infantil de animação 3D cheia de música, ciência e afeto familiar.
-              </p>
+              <p className="text-sm text-slate-400 leading-relaxed">{footer.description}</p>
               <div className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-amber-300">
-                <span>❄️</span> Na ponta do mundo, a esperança nunca congela!
+                <span>❄️</span> {footer.tagline}
               </div>
             </div>
 
             {/* Column 2: Navigation Links */}
             <div>
               <h4 className="font-heading font-bold text-white text-base mb-4 tracking-wide uppercase text-xs text-sky-400">
-                Navegação
+                {footer.navigationTitle}
               </h4>
               <ul className="space-y-2.5 text-sm">
-                {NAV_LINKS.map((link) => (
+                {navItems.map((link) => (
                   <li key={link.href}>
                     <a
                       href={link.href}
@@ -287,88 +333,62 @@ export default function Layout() {
             {/* Column 3: Redes & Canais */}
             <div>
               <h4 className="font-heading font-bold text-white text-base mb-4 tracking-wide uppercase text-xs text-sky-400">
-                Redes Oficiais
+                {footer.socialTitle}
               </h4>
               <ul className="space-y-3 text-sm">
-                <li>
-                  <a
-                    href="https://www.youtube.com/channel/UCE8XJTPjM16alpIZUPM5DXg"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-slate-300 hover:text-red-400 transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-red-600/20 text-red-500 flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-colors">
-                      <Youtube className="w-4 h-4 fill-current" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-white">YouTube</div>
-                      <div className="text-xs text-slate-400">Canal oficial da série</div>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.instagram.com/freddielolla/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-slate-300 hover:text-pink-400 transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-pink-600/20 text-pink-500 flex items-center justify-center group-hover:bg-pink-600 group-hover:text-white transition-colors">
-                      <Instagram className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-white">Instagram</div>
-                      <div className="text-xs text-slate-400">@freddielolla</div>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.facebook.com/freddieelolla"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-slate-300 hover:text-blue-400 transition-colors group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-blue-600/20 text-blue-500 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                      <Facebook className="w-4 h-4 fill-current" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-white">Facebook</div>
-                      <div className="text-xs text-slate-400">Freddie e Lolla</div>
-                    </div>
-                  </a>
-                </li>
+                {social.links.map((link) => {
+                  const key = link.platform.toLowerCase()
+                  const Icon = SOCIAL_ICONS[key] ?? Instagram
+                  const colors = SOCIAL_COLORS[key] ?? SOCIAL_COLORS.instagram
+                  return (
+                    <li key={link.platform}>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center gap-3 text-slate-300 transition-colors group ${colors.hover}`}
+                      >
+                        <div
+                          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${colors.box}`}
+                        >
+                          <Icon className="w-4 h-4 fill-current" />
+                        </div>
+                        <div>
+                          <div className="font-semibold text-white">{link.platform}</div>
+                          <div className="text-xs text-slate-400">
+                            {key === 'youtube' ? 'Canal oficial da série' : link.handle}
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
 
             {/* Column 4: Mercado & Contato */}
             <div>
               <h4 className="font-heading font-bold text-white text-base mb-4 tracking-wide uppercase text-xs text-sky-400">
-                Mercado Audiovisual
+                {footer.marketTitle}
               </h4>
-              <p className="text-sm text-slate-400 leading-relaxed mb-4">
-                Propriedade intelectual 100% original e registrada (EDA/FBN e Escola de Música da
-                UFRJ).
-              </p>
+              <p className="text-sm text-slate-400 leading-relaxed mb-4">{footer.marketText}</p>
               <a
-                href="mailto:lacerdarogerio1@gmail.com"
+                href={footer.ctaUrl}
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-xs shadow-md transition-all"
               >
-                <span>Solicitar a bíblia da série</span>
+                <span>{footer.ctaLabel}</span>
               </a>
-              <div className="mt-3 text-xs text-slate-500">Contato: lacerdarogerio1@gmail.com</div>
+              <div className="mt-3 text-xs text-slate-500">{footer.contactNote}</div>
             </div>
           </div>
 
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-            <div>
-              © 2025 Freddie e Lolla — Aventuras na Baía Quente. Todos os direitos reservados.
-            </div>
+            <div>{footer.copyright}</div>
             <div className="flex items-center gap-1">
-              <span>Feito com</span>
-              <span className="text-amber-400">💛</span>
-              <span>na Baía Quente, Península Antártica.</span>
+              <span>{footer.madeWithBefore}</span>
+              <span className="text-amber-400">{footer.madeWithHighlight}</span>
+              <span>{footer.madeWithAfter}</span>
             </div>
           </div>
         </div>
