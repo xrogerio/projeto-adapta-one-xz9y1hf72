@@ -58,6 +58,11 @@ export const SITE_DATA = {
       'O caos fofo de dois irmãos pinguins cuidando de três bebês trigêmeos na Antártica.',
     meta: 'Episódios de cerca de 6 minutos · Para crianças de 4 a 7 anos',
     youtubeChannelUrl: 'https://www.youtube.com/channel/UCE8XJTPjM16alpIZUPM5DXg',
+    primaryCta: {
+      label: 'Assistir no YouTube',
+      url: 'https://www.youtube.com/channel/UCE8XJTPjM16alpIZUPM5DXg',
+    },
+    secondaryCta: { label: 'Ouvir as músicas', href: '#musicas' },
   },
 
   about: {
@@ -192,6 +197,9 @@ export const SITE_DATA = {
     sectionSubtitle:
       'Dez episódios cheios de descobertas, aulas de ciência e reviravoltas na Baía Quente.',
     meta: ['10 episódios', '~6 minutos cada', 'Disponível no YouTube'],
+    videosHeading: 'Vídeos em Destaque',
+    videosLinkLabel: 'Ver todos os vídeos no canal oficial',
+    guideHeading: 'Guia de Episódios (Temporada 1)',
     list: [
       {
         number: '01',
@@ -305,12 +313,14 @@ export const SITE_DATA = {
         icon: 'disc' as const,
       },
     ],
+    cardFooterNote: 'Disponível nos streamings',
   },
 
   social: {
     sectionEyebrow: 'Siga a série',
     sectionTitle: 'Acompanhe a Baía Quente',
     sectionSubtitle: 'Novidades, bastidores e clipes nas redes oficiais da série.',
+    cardCtaLabel: 'Acessar perfil',
     links: [
       {
         platform: 'Instagram',
@@ -339,6 +349,7 @@ export const SITE_DATA = {
   market: {
     sectionEyebrow: 'Para o mercado audiovisual',
     sectionTitle: 'Para produtoras, distribuidoras e plataformas de streaming',
+    ipTitle: 'Propriedade Intelectual 100% Original e Registrada',
     mainText:
       'Freddie e Lolla: Aventuras na Baía Quente é uma propriedade intelectual 100% original e registrada: bíblia de animação, guia de personagens, guia de cenários, linha do tempo da temporada e roteiros masters arquivados no Escritório de Direitos Autorais da Fundação Biblioteca Nacional (EDA/FBN), conforme a Lei nº 9.610/1998. A trilha sonora original — single e álbum com 10 faixas — está registrada na Escola de Música da UFRJ. Episódios e clipes já no ar no YouTube e redes sociais, com álbum completo nos streamings.',
     packageTitle: 'Pacote disponível para avaliação',
@@ -352,7 +363,12 @@ export const SITE_DATA = {
     referencesTitle: 'Referências de estilo',
     referencesSubtitle: 'Afeto, humor e universos visuais que inspiram a Baía Quente.',
     referenceTags: ['Bluey', 'Up', 'Wall-E', 'Toy Story', 'Procurando Nemo'],
+    referencesNote:
+      'Narrativa focada em co-viewing familiar, lições orgânicas de cooperação, empatia e ciência natural para crianças em idade pré-escolar e fundamental inicial.',
+    ctaTitle: 'Interessado em levar a Baía Quente para sua plataforma?',
+    ctaText:
+      'Solicite a bíblia completa de produção, roteiros e materiais musicais diretamente com a equipe criativa.',
     ctaLabel: 'Solicitar a bíblia da série',
-    ctaEmail: 'mailto:lacerdarogerio1@gmail.com',
+    ctaEmail: 'lacerdarogerio1@gmail.com',
   },
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T18:26:35.856Z",
+  "generatedAt": "2026-11-03T19:33:06.620Z",
   "collections": [
     {
       "name": "users",
@@ -43,6 +43,1127 @@
         "CREATE UNIQUE INDEX `idx_tokenKey__pb_users_auth_` ON `users` (`tokenKey`)",
         "CREATE UNIQUE INDEX `idx_email__pb_users_auth_` ON `users` (`email`) WHERE `email` != ''"
       ]
+    },
+    {
+      "name": "site_menu",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "bannerTagline",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "bannerBadge",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "brandTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "brandSubtitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "logo",
+          "type": "file",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ctaLabel",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ctaUrl",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "items",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "key",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE UNIQUE INDEX idx_site_menu_key ON site_menu (key)"]
+    },
+    {
+      "name": "site_footer",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "brandTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "brandSubtitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "logo",
+          "type": "file",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "tagline",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "navigationTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "socialTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "marketTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "marketText",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ctaLabel",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ctaUrl",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "contactNote",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "copyright",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "madeWithBefore",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "madeWithHighlight",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "madeWithAfter",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "key",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE UNIQUE INDEX idx_site_footer_key ON site_footer (key)"]
+    },
+    {
+      "name": "hero",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "badge",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "titleMain",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "titleSub",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "tagline",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "meta",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "primaryCtaLabel",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "primaryCtaUrl",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "secondaryCtaLabel",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "secondaryCtaHref",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "image",
+          "type": "file",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "key",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE UNIQUE INDEX idx_hero_key ON hero (key)"]
+    },
+    {
+      "name": "about",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "sectionEyebrow",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sectionTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sectionSubtitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "quote",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "fullText",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "chips",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "features",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "key",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE UNIQUE INDEX idx_about_key ON about (key)"]
+    },
+    {
+      "name": "site_characters",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "sectionEyebrow",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sectionTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sectionSubtitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "tabAllLabel",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "tabGrownupsLabel",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "tabBabiesLabel",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "tabGuardiansLabel",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "key",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE UNIQUE INDEX idx_site_characters_key ON site_characters (key)"]
+    },
+    {
+      "name": "site_episodes",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "sectionEyebrow",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sectionTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sectionSubtitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "meta",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "videosHeading",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "videosLinkLabel",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "guideHeading",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "key",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE UNIQUE INDEX idx_site_episodes_key ON site_episodes (key)"]
+    },
+    {
+      "name": "soundtrack",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "sectionEyebrow",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sectionTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sectionSubtitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "quote",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "quoteAuthor",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "platforms",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "cards",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "cardFooterNote",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "key",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE UNIQUE INDEX idx_soundtrack_key ON soundtrack (key)"]
+    },
+    {
+      "name": "social",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "sectionEyebrow",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sectionTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sectionSubtitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "cardCtaLabel",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "key",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE UNIQUE INDEX idx_social_key ON social (key)"]
+    },
+    {
+      "name": "market",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "sectionEyebrow",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sectionTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ipTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "mainText",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "packageTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "packageNote",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "packageItems",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "referencesTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "referencesSubtitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "referenceTags",
+          "type": "json",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "referencesNote",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ctaTitle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ctaText",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ctaLabel",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ctaEmail",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "ctaUrl",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "key",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE UNIQUE INDEX idx_market_key ON market (key)"]
+    },
+    {
+      "name": "characters",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "name",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "ageOrRole",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "avatarType",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": [
+            "penguin-boy",
+            "penguin-girl",
+            "penguin-baby-pink",
+            "penguin-baby-green",
+            "penguin-baby-blue",
+            "grandma",
+            "pilot-dad",
+            "mom",
+            "albatross",
+            "whale"
+          ]
+        },
+        {
+          "name": "accentColor",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "charGroup",
+          "type": "select",
+          "required": false,
+          "system": false,
+          "selectValues": ["grownups", "babies", "guardians"]
+        },
+        {
+          "name": "image",
+          "type": "file",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "slug",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sort_order",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE INDEX idx_characters_order ON characters (sort_order)"]
+    },
+    {
+      "name": "episodes",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "number",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "synopsis",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "badge",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "slug",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sort_order",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE INDEX idx_episodes_order ON episodes (sort_order)"]
+    },
+    {
+      "name": "site_videos",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "title",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "thumbnailHint",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "tag",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "slug",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sort_order",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE INDEX idx_site_videos_order ON site_videos (sort_order)"]
+    },
+    {
+      "name": "social_links",
+      "type": "base",
+      "apiRules": {
+        "list": "",
+        "view": "",
+        "create": "@request.auth.id != ''",
+        "update": "@request.auth.id != ''",
+        "delete": "@request.auth.id != ''"
+      },
+      "fields": [
+        {
+          "name": "platform",
+          "type": "text",
+          "required": true,
+          "system": false
+        },
+        {
+          "name": "handle",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "label",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "color",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "footerNote",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "slug",
+          "type": "text",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "sort_order",
+          "type": "number",
+          "required": false,
+          "system": false
+        },
+        {
+          "name": "created",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate"]
+        },
+        {
+          "name": "updated",
+          "type": "autodate",
+          "required": false,
+          "system": false,
+          "autodateTriggers": ["onCreate", "onUpdate"]
+        }
+      ],
+      "indexes": ["CREATE INDEX idx_social_links_order ON social_links (sort_order)"]
     }
   ]
 }
