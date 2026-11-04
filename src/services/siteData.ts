@@ -96,6 +96,7 @@ export interface SiteData {
     tagline: string
     description: string
     meta: string
+    youtubeChannelUrl: string
     primaryCtaLabel: string
     primaryCtaUrl: string
     secondaryCtaLabel: string
@@ -237,6 +238,7 @@ export function buildStaticSiteData(): SiteData {
       tagline: d.hero.tagline,
       description: d.hero.description,
       meta: d.hero.meta,
+      youtubeChannelUrl: d.hero.youtubeChannelUrl,
       primaryCtaLabel: d.hero.primaryCta.label,
       primaryCtaUrl: d.hero.primaryCta.url,
       secondaryCtaLabel: d.hero.secondaryCta.label,
@@ -463,6 +465,7 @@ export async function loadSiteData(): Promise<SiteData> {
       tagline: asString(heroRec.tagline, base.hero.tagline),
       description: asString(heroRec.description, base.hero.description),
       meta: asString(heroRec.meta, base.hero.meta),
+      youtubeChannelUrl: asString(heroRec.youtubeChannelUrl, base.hero.youtubeChannelUrl),
       primaryCtaLabel: asString(heroRec.primaryCtaLabel, base.hero.primaryCtaLabel),
       primaryCtaUrl: asString(heroRec.primaryCtaUrl, base.hero.primaryCtaUrl),
       secondaryCtaLabel: asString(heroRec.secondaryCtaLabel, base.hero.secondaryCtaLabel),

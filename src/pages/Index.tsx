@@ -26,19 +26,49 @@ import {
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
-import { SITE_DATA } from '@/data/siteContent'
 import { CharacterAvatar } from '@/components/CharacterAvatar'
+import { useSiteData } from '@/hooks/useSiteData'
 
 export default function Index() {
+  const data = useSiteData()
   const [activeTab, setActiveTab] = useState<'all' | 'babies' | 'grownups' | 'guardians'>('all')
 
-  const filteredCharacters = SITE_DATA.characters.filter((char) => {
+  const characters = data.characters
+  const filteredCharacters = characters.filter((char) => {
     if (activeTab === 'all') return true
-    if (activeTab === 'babies') return ['lilly', 'pimpi', 'popo'].includes(char.id)
-    if (activeTab === 'grownups') return ['freddie', 'lolla', 'atlas', 'amelia'].includes(char.id)
-    if (activeTab === 'guardians') return ['aurora', 'hugo', 'bel'].includes(char.id)
+    if (activeTab === 'babies') {
+      if (char.charGroup === 'babies') return true
+      const idOrSlug = (char.slug || char.id).toLowerCase()
+      return ['lilly', 'pimpi', 'popo'].includes(idOrSlug)
+    }
+    if (activeTab === 'grownups') {
+      if (char.charGroup === 'grownups') return true
+      const idOrSlug = (char.slug || char.id).toLowerCase()
+      return ['freddie', 'lolla', 'atlas', 'amelia'].includes(idOrSlug)
+    }
+    if (activeTab === 'guardians') {
+      if (char.charGroup === 'guardians') return true
+      const idOrSlug = (char.slug || char.id).toLowerCase()
+      return ['aurora', 'hugo', 'bel'].includes(idOrSlug)
+    }
     return true
   })
+
+  const heroYoutubeUrl =
+    data.hero.youtubeChannelUrl || data.hero.primaryCtaUrl || 'https://www.youtube.com'
+  const heroPrimaryLabel = data.hero.primaryCtaLabel || 'Assistir no YouTube'
+  const heroSecondaryLabel = data.hero.secondaryCtaLabel || 'Ouvir as músicas'
+  const heroSecondaryHref = data.hero.secondaryCtaHref || '#musicas'
+
+  const ctaEmail = data.market.ctaEmail
+    ? data.market.ctaEmail.startsWith('mailto:')
+      ? data.market.ctaEmail
+      : `mailto:${data.market.ctaEmail}`
+    : 'mailto:lacerdarogerio1@gmail.com'
+
+  const rawEmailDisplay = data.market.ctaEmail
+    ? data.market.ctaEmail.replace(/^mailto:/, '')
+    : 'lacerdarogerio1@gmail.com'
 
   return (
     <div className="w-full overflow-hidden">
@@ -68,31 +98,47 @@ export default function Index() {
 
         <div className="max-w-6xl mx-auto w-full relative z-10 text-center">
           {/* Top Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-100/90 text-sky-800 border border-sky-200 text-xs sm:text-sm font-bold tracking-wide uppercase mb-6 shadow-sm animate-fade-in-down">
-            <span className="text-amber-500">✨</span>
-            <span>{SITE_DATA.hero.badge}</span>
-            <span className="text-amber-500">✨</span>
-          </div>
+          {data.hero.badge && (
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-100/90 text-sky-800 border border-sky-200 text-xs sm:text-sm font-bold tracking-wide uppercase mb-6 shadow-sm animate-fade-in-down">
+              <span className="text-amber-500">✨</span>
+              <span>{data.hero.badge}</span>
+              <span className="text-amber-500">✨</span>
+            </div>
+          )}
 
           {/* Main Title */}
           <h1 className="font-heading font-extrabold text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-slate-900 leading-[1.08] mb-4">
-            FREDDIE <span className="text-orange-500">&</span> LOLLA
+            {data.hero.titleMain.includes('&') ? (
+              <>
+                {data.hero.titleMain.split('&')[0]}
+                <span className="text-orange-500">&</span>
+                {data.hero.titleMain.split('&').slice(1).join('&')}
+              </>
+            ) : (
+              data.hero.titleMain
+            )}
           </h1>
-          <div className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl text-sky-700 tracking-tight mb-6">
-            Aventuras na Baía Quente
-          </div>
+          {data.hero.titleSub && (
+            <div className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl text-sky-700 tracking-tight mb-6">
+              {data.hero.titleSub}
+            </div>
+          )}
 
           {/* Tagline Callout */}
-          <div className="inline-block max-w-3xl mx-auto px-6 py-2.5 rounded-2xl bg-gradient-to-r from-sky-50 via-amber-50 to-orange-50 border border-amber-200/80 shadow-sm mb-6">
-            <p className="font-heading font-bold text-lg sm:text-xl md:text-2xl text-slate-800">
-              “{SITE_DATA.hero.tagline}”
-            </p>
-          </div>
+          {data.hero.tagline && (
+            <div className="inline-block max-w-3xl mx-auto px-6 py-2.5 rounded-2xl bg-gradient-to-r from-sky-50 via-amber-50 to-orange-50 border border-amber-200/80 shadow-sm mb-6">
+              <p className="font-heading font-bold text-lg sm:text-xl md:text-2xl text-slate-800">
+                “{data.hero.tagline}”
+              </p>
+            </div>
+          )}
 
           {/* Short Description */}
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed mb-8">
-            {SITE_DATA.hero.description}
-          </p>
+          {data.hero.description && (
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed mb-8">
+              {data.hero.description}
+            </p>
+          )}
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8">
@@ -101,9 +147,9 @@ export default function Index() {
               size="lg"
               className="w-full sm:w-auto bg-gradient-to-r from-red-600 via-red-500 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold text-base rounded-full shadow-lg hover:shadow-xl transition-all px-8 py-6 gap-2"
             >
-              <a href={SITE_DATA.hero.youtubeChannelUrl} target="_blank" rel="noopener noreferrer">
+              <a href={heroYoutubeUrl} target="_blank" rel="noopener noreferrer">
                 <Play className="w-5 h-5 fill-white" />
-                Assistir no YouTube
+                {heroPrimaryLabel}
               </a>
             </Button>
 
@@ -113,22 +159,24 @@ export default function Index() {
               size="lg"
               className="w-full sm:w-auto bg-white/90 hover:bg-sky-50 text-sky-800 border-2 border-sky-300 font-bold text-base rounded-full shadow-sm hover:shadow-md transition-all px-8 py-6 gap-2"
             >
-              <a href="#musicas">
+              <a href={heroSecondaryHref}>
                 <Music2 className="w-5 h-5 text-sky-600" />
-                Ouvir as músicas
+                {heroSecondaryLabel}
               </a>
             </Button>
           </div>
 
           {/* Hero Metadata Pill */}
-          <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-500 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-200 shadow-sm">
-            <Clock className="w-4 h-4 text-sky-500" />
-            <span>{SITE_DATA.hero.meta}</span>
-          </div>
+          {data.hero.meta && (
+            <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-500 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-200 shadow-sm">
+              <Clock className="w-4 h-4 text-sky-500" />
+              <span>{data.hero.meta}</span>
+            </div>
+          )}
 
           {/* Quick Mascot Preview Row */}
           <div className="mt-12 flex items-center justify-center -space-x-3 sm:-space-x-4">
-            {SITE_DATA.characters.slice(0, 5).map((char) => (
+            {characters.slice(0, 5).map((char) => (
               <div
                 key={char.id}
                 className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white p-1 shadow-md border-2 border-white hover:scale-110 hover:z-20 transition-all cursor-pointer"
@@ -138,6 +186,7 @@ export default function Index() {
                   type={char.avatarType}
                   name={char.name}
                   accentColor={char.accentColor}
+                  imageUrl={char.image}
                   className="w-full h-full rounded-xl"
                 />
               </div>
@@ -154,12 +203,12 @@ export default function Index() {
           {/* Eyebrow & Title */}
           <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">
-              {SITE_DATA.about.sectionEyebrow}
+              {data.about.sectionEyebrow}
             </span>
             <h2 className="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-slate-900 mt-3 mb-4">
-              {SITE_DATA.about.sectionTitle}
+              {data.about.sectionTitle}
             </h2>
-            <p className="text-base sm:text-lg text-slate-600">{SITE_DATA.about.sectionSubtitle}</p>
+            <p className="text-base sm:text-lg text-slate-600">{data.about.sectionSubtitle}</p>
           </div>
 
           {/* Premise Quote Card */}
@@ -169,18 +218,18 @@ export default function Index() {
             </div>
             <div className="relative z-10 max-w-4xl mx-auto text-center">
               <blockquote className="font-heading font-semibold text-lg sm:text-xl md:text-2xl text-slate-800 leading-relaxed mb-6 italic">
-                {SITE_DATA.about.quote}
+                {data.about.quote}
               </blockquote>
               <div className="w-16 h-1 bg-gradient-to-r from-sky-400 to-orange-400 rounded-full mx-auto mb-6" />
               <p className="text-slate-600 text-base sm:text-lg leading-relaxed text-justify sm:text-center">
-                {SITE_DATA.about.fullText}
+                {data.about.fullText}
               </p>
             </div>
           </div>
 
           {/* Chips */}
           <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 mb-14">
-            {SITE_DATA.about.chips.map((chip, idx) => (
+            {data.about.chips.map((chip, idx) => (
               <span
                 key={idx}
                 className="px-4 py-2 rounded-2xl bg-slate-100 text-slate-800 font-bold text-xs sm:text-sm border border-slate-200/80 shadow-xs flex items-center gap-1.5"
@@ -193,7 +242,7 @@ export default function Index() {
 
           {/* Three Feature Pillars */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {SITE_DATA.about.features.map((feature, idx) => (
+            {data.about.features.map((feature, idx) => (
               <Card
                 key={idx}
                 className="rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow bg-gradient-to-b from-white to-slate-50/50"
@@ -224,23 +273,23 @@ export default function Index() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-10">
             <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-100">
-              Personagens
+              {data.charactersSection.sectionEyebrow}
             </span>
             <h2 className="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-slate-900 mt-3 mb-4">
-              Quem vive na Baía Quente
+              {data.charactersSection.sectionTitle}
             </h2>
             <p className="text-base sm:text-lg text-slate-600">
-              Pinguins, trigêmeos, uma vizinha misteriosa e amigos gigantes do mar e do céu.
+              {data.charactersSection.sectionSubtitle}
             </p>
           </div>
 
           {/* Character Filter Tabs */}
           <div className="flex items-center justify-center gap-2 mb-10 overflow-x-auto pb-2">
             {[
-              { id: 'all', label: 'Todos os 10' },
-              { id: 'grownups', label: 'Freddie, Lolla e Pais' },
-              { id: 'babies', label: 'Os Trigêmeos' },
-              { id: 'guardians', label: 'Guardiões e Vizinha' },
+              { id: 'all', label: data.charactersSection.tabs.all },
+              { id: 'grownups', label: data.charactersSection.tabs.grownups },
+              { id: 'babies', label: data.charactersSection.tabs.babies },
+              { id: 'guardians', label: data.charactersSection.tabs.guardians },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -269,6 +318,7 @@ export default function Index() {
                       type={char.avatarType}
                       name={char.name}
                       accentColor={char.accentColor}
+                      imageUrl={char.image}
                       className="w-20 h-20 shrink-0"
                     />
                     <Badge
@@ -306,18 +356,18 @@ export default function Index() {
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">
-              {SITE_DATA.episodes.sectionEyebrow}
+              {data.episodesSection.sectionEyebrow}
             </span>
             <h2 className="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-slate-900 mt-3 mb-4">
-              {SITE_DATA.episodes.sectionTitle}
+              {data.episodesSection.sectionTitle}
             </h2>
             <p className="text-base sm:text-lg text-slate-600 mb-6">
-              {SITE_DATA.episodes.sectionSubtitle}
+              {data.episodesSection.sectionSubtitle}
             </p>
 
             {/* Badges metadata */}
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-              {SITE_DATA.episodes.meta.map((item, idx) => (
+              {data.episodesSection.meta.map((item, idx) => (
                 <span
                   key={idx}
                   className="px-3.5 py-1.5 rounded-full bg-sky-50 text-sky-800 font-bold text-xs sm:text-sm border border-sky-100 flex items-center gap-1.5"
@@ -332,11 +382,12 @@ export default function Index() {
           {/* Videos Highlights Row */}
           <div className="mb-16">
             <h3 className="font-heading font-bold text-xl sm:text-2xl text-slate-900 mb-6 flex items-center gap-2">
-              <span className="text-red-500">▶</span> Vídeos em Destaque
+              <span className="text-red-500">▶</span>{' '}
+              {data.episodesSection.videosHeading || 'Vídeos em Destaque'}
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              {SITE_DATA.episodes.videos.map((video) => (
+              {data.videos.map((video) => (
                 <Card
                   key={video.id}
                   className="rounded-3xl border-2 border-sky-100 bg-gradient-to-br from-slate-900 to-sky-950 text-white shadow-md overflow-hidden group"
@@ -376,12 +427,14 @@ export default function Index() {
             {/* Direct Channel CTA */}
             <div className="text-center">
               <a
-                href={SITE_DATA.hero.youtubeChannelUrl}
+                href={heroYoutubeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm sm:text-base font-bold text-red-600 hover:text-red-700 underline underline-offset-4"
               >
-                <span>Ver todos os vídeos no canal oficial</span>
+                <span>
+                  {data.episodesSection.videosLinkLabel || 'Ver todos os vídeos no canal oficial'}
+                </span>
                 <ChevronRight className="w-4 h-4" />
               </a>
             </div>
@@ -390,11 +443,12 @@ export default function Index() {
           {/* 10 Episodes List Grid */}
           <div>
             <h3 className="font-heading font-bold text-xl sm:text-2xl text-slate-900 mb-6 flex items-center gap-2">
-              <Tv className="w-5 h-5 text-sky-600" /> Guia de Episódios (Temporada 1)
+              <Tv className="w-5 h-5 text-sky-600" />{' '}
+              {data.episodesSection.guideHeading || 'Guia de Episódios (Temporada 1)'}
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-              {SITE_DATA.episodes.list.map((ep) => (
+              {data.episodes.map((ep) => (
                 <div
                   key={ep.number}
                   className="rounded-2xl border border-slate-200 bg-white p-5 hover:border-sky-300 hover:shadow-md transition-all flex items-start gap-4"
@@ -436,34 +490,32 @@ export default function Index() {
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-amber-300 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/20">
-              {SITE_DATA.soundtrack.sectionEyebrow}
+              {data.soundtrack.sectionEyebrow}
             </span>
             <h2 className="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-white mt-3 mb-4">
-              {SITE_DATA.soundtrack.sectionTitle}
+              {data.soundtrack.sectionTitle}
             </h2>
-            <p className="text-base sm:text-lg text-sky-200">
-              {SITE_DATA.soundtrack.sectionSubtitle}
-            </p>
+            <p className="text-base sm:text-lg text-sky-200">{data.soundtrack.sectionSubtitle}</p>
           </div>
 
           {/* Quote Block */}
           <div className="rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 p-8 sm:p-10 text-center max-w-3xl mx-auto mb-12 shadow-xl">
             <Music2 className="w-10 h-10 text-amber-300 mx-auto mb-4" />
             <blockquote className="font-heading font-bold text-xl sm:text-2xl text-amber-200 leading-relaxed mb-3">
-              {SITE_DATA.soundtrack.quote}
+              {data.soundtrack.quote}
             </blockquote>
             <p className="text-sky-300 text-xs sm:text-sm font-medium tracking-wide">
-              — {SITE_DATA.soundtrack.quoteAuthor}
+              — {data.soundtrack.quoteAuthor}
             </p>
           </div>
 
           {/* Description & Platform Chips */}
           <div className="text-center max-w-2xl mx-auto mb-12">
             <p className="text-sky-100 text-base sm:text-lg leading-relaxed mb-6">
-              {SITE_DATA.soundtrack.description}
+              {data.soundtrack.description}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-semibold text-sky-200">
-              {SITE_DATA.soundtrack.platforms.map((platform, idx) => (
+              {data.soundtrack.platforms.map((platform, idx) => (
                 <span
                   key={idx}
                   className="px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-xs"
@@ -476,7 +528,7 @@ export default function Index() {
 
           {/* 3 Soundtrack Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {SITE_DATA.soundtrack.cards.map((card, idx) => (
+            {data.soundtrack.cards.map((card, idx) => (
               <Card
                 key={idx}
                 className="rounded-3xl bg-white/10 backdrop-blur-md border border-white/15 text-white hover:bg-white/15 transition-all shadow-lg"
@@ -500,7 +552,7 @@ export default function Index() {
                   </div>
 
                   <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-sky-300 font-semibold">
-                    <span>Disponível nos streamings</span>
+                    <span>{data.soundtrack.cardFooterNote || 'Disponível nos streamings'}</span>
                     <span>♪</span>
                   </div>
                 </CardContent>
@@ -517,25 +569,23 @@ export default function Index() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-pink-600 bg-pink-50 px-3 py-1 rounded-full border border-pink-100">
-              {SITE_DATA.social.sectionEyebrow}
+              {data.social.sectionEyebrow}
             </span>
             <h2 className="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-slate-900 mt-3 mb-4">
-              {SITE_DATA.social.sectionTitle}
+              {data.social.sectionTitle}
             </h2>
-            <p className="text-base sm:text-lg text-slate-600">
-              {SITE_DATA.social.sectionSubtitle}
-            </p>
+            <p className="text-base sm:text-lg text-slate-600">{data.social.sectionSubtitle}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {SITE_DATA.social.links.map((link) => {
+            {data.socialLinks.map((link) => {
               const isYoutube = link.platform === 'YouTube'
               const isInstagram = link.platform === 'Instagram'
               const isFacebook = link.platform === 'Facebook'
 
               return (
                 <a
-                  key={link.platform}
+                  key={link.id || link.platform}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -561,7 +611,7 @@ export default function Index() {
                   </div>
 
                   <div className="flex items-center gap-1.5 text-sm font-bold text-slate-800 group-hover:text-sky-600">
-                    <span>Acessar perfil</span>
+                    <span>{data.social.cardCtaLabel || 'Acessar perfil'}</span>
                     <ExternalLink className="w-4 h-4" />
                   </div>
                 </a>
@@ -578,10 +628,10 @@ export default function Index() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">
-              {SITE_DATA.market.sectionEyebrow}
+              {data.market.sectionEyebrow}
             </span>
             <h2 className="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-slate-900 mt-3 mb-4">
-              {SITE_DATA.market.sectionTitle}
+              {data.market.sectionTitle}
             </h2>
           </div>
 
@@ -593,10 +643,10 @@ export default function Index() {
               </div>
               <div>
                 <h3 className="font-heading font-bold text-xl text-white mb-2">
-                  Propriedade Intelectual 100% Original e Registrada
+                  {data.market.ipTitle || 'Propriedade Intelectual 100% Original e Registrada'}
                 </h3>
                 <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                  {SITE_DATA.market.mainText}
+                  {data.market.mainText}
                 </p>
               </div>
             </div>
@@ -613,16 +663,14 @@ export default function Index() {
                   </div>
                   <div>
                     <h3 className="font-heading font-bold text-xl text-slate-900">
-                      {SITE_DATA.market.packageTitle}
+                      {data.market.packageTitle}
                     </h3>
-                    <p className="text-xs text-slate-500 font-medium">
-                      {SITE_DATA.market.packageNote}
-                    </p>
+                    <p className="text-xs text-slate-500 font-medium">{data.market.packageNote}</p>
                   </div>
                 </div>
 
                 <ul className="space-y-3 mt-6">
-                  {SITE_DATA.market.packageItems.map((item, idx) => (
+                  {data.market.packageItems.map((item, idx) => (
                     <li
                       key={idx}
                       className="flex items-start gap-3 text-sm sm:text-base text-slate-700 font-semibold"
@@ -644,16 +692,16 @@ export default function Index() {
                   </div>
                   <div>
                     <h3 className="font-heading font-bold text-xl text-slate-900">
-                      {SITE_DATA.market.referencesTitle}
+                      {data.market.referencesTitle}
                     </h3>
                     <p className="text-xs text-slate-500 font-medium">
-                      {SITE_DATA.market.referencesSubtitle}
+                      {data.market.referencesSubtitle}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap gap-2.5 mt-6">
-                  {SITE_DATA.market.referenceTags.map((tag) => (
+                  {data.market.referenceTags.map((tag) => (
                     <span
                       key={tag}
                       className="px-4 py-2 rounded-2xl bg-white border border-slate-200 shadow-xs text-slate-800 font-heading font-bold text-sm flex items-center gap-1.5"
@@ -665,8 +713,8 @@ export default function Index() {
                 </div>
 
                 <p className="text-xs text-slate-500 mt-6 leading-relaxed">
-                  Narrativa focada em co-viewing familiar, lições orgânicas de cooperação, empatia e
-                  ciência natural para crianças em idade pré-escolar e fundamental inicial.
+                  {data.market.referencesNote ||
+                    'Narrativa focada em co-viewing familiar, lições orgânicas de cooperação, empatia e ciência natural para crianças em idade pré-escolar e fundamental inicial.'}
                 </p>
               </CardContent>
             </Card>
@@ -675,11 +723,11 @@ export default function Index() {
           {/* Big CTA to Request Series Bible */}
           <div className="rounded-3xl bg-gradient-to-r from-sky-600 via-sky-500 to-indigo-600 text-white p-8 sm:p-12 text-center shadow-xl">
             <h3 className="font-heading font-extrabold text-2xl sm:text-3xl md:text-4xl text-white mb-4">
-              Interessado em levar a Baía Quente para sua plataforma?
+              {data.market.ctaTitle || 'Interessado em levar a Baía Quente para sua plataforma?'}
             </h3>
             <p className="text-sky-100 max-w-2xl mx-auto text-base sm:text-lg mb-8 leading-relaxed">
-              Solicite a bíblia completa de produção, roteiros e materiais musicais diretamente com
-              a equipe criativa.
+              {data.market.ctaText ||
+                'Solicite a bíblia completa de produção, roteiros e materiais musicais diretamente com a equipe criativa.'}
             </p>
 
             <Button
@@ -687,12 +735,12 @@ export default function Index() {
               size="lg"
               className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-heading font-extrabold text-base sm:text-lg rounded-full px-8 py-6 shadow-lg hover:shadow-xl transition-all gap-2"
             >
-              <a href={SITE_DATA.market.ctaEmail}>
+              <a href={ctaEmail}>
                 <Mail className="w-5 h-5 text-slate-950" />
-                {SITE_DATA.market.ctaLabel}
+                {data.market.ctaLabel}
               </a>
             </Button>
-            <div className="mt-4 text-xs text-sky-200">Email direto: lacerdarogerio1@gmail.com</div>
+            <div className="mt-4 text-xs text-sky-200">Email direto: {rawEmailDisplay}</div>
           </div>
         </div>
       </section>
