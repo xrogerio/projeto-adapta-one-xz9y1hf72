@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T02:25:42.667Z",
+  "generatedAt": "2026-11-04T02:29:26.963Z",
   "collections": [
     {
       "name": "users",
@@ -29,14 +29,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
       "indexes": [
@@ -114,17 +119,24 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
-      "indexes": ["CREATE UNIQUE INDEX idx_site_menu_key ON site_menu (key)"]
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_site_menu_key ON site_menu (key)"
+      ]
     },
     {
       "name": "site_footer",
@@ -244,17 +256,24 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
-      "indexes": ["CREATE UNIQUE INDEX idx_site_footer_key ON site_footer (key)"]
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_site_footer_key ON site_footer (key)"
+      ]
     },
     {
       "name": "hero",
@@ -344,14 +363,19 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         },
         {
           "name": "youtubeChannelUrl",
@@ -360,7 +384,9 @@
           "system": false
         }
       ],
-      "indexes": ["CREATE UNIQUE INDEX idx_hero_key ON hero (key)"]
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_hero_key ON hero (key)"
+      ]
     },
     {
       "name": "about",
@@ -426,17 +452,24 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
-      "indexes": ["CREATE UNIQUE INDEX idx_about_key ON about (key)"]
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_about_key ON about (key)"
+      ]
     },
     {
       "name": "site_characters",
@@ -502,17 +535,24 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
-      "indexes": ["CREATE UNIQUE INDEX idx_site_characters_key ON site_characters (key)"]
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_site_characters_key ON site_characters (key)"
+      ]
     },
     {
       "name": "site_episodes",
@@ -578,17 +618,24 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
-      "indexes": ["CREATE UNIQUE INDEX idx_site_episodes_key ON site_episodes (key)"]
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_site_episodes_key ON site_episodes (key)"
+      ]
     },
     {
       "name": "soundtrack",
@@ -666,17 +713,24 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
-      "indexes": ["CREATE UNIQUE INDEX idx_soundtrack_key ON soundtrack (key)"]
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_soundtrack_key ON soundtrack (key)"
+      ]
     },
     {
       "name": "social",
@@ -724,17 +778,24 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
-      "indexes": ["CREATE UNIQUE INDEX idx_social_key ON social (key)"]
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_social_key ON social (key)"
+      ]
     },
     {
       "name": "market",
@@ -854,17 +915,24 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
-      "indexes": ["CREATE UNIQUE INDEX idx_market_key ON market (key)"]
+      "indexes": [
+        "CREATE UNIQUE INDEX idx_market_key ON market (key)"
+      ]
     },
     {
       "name": "characters",
@@ -924,7 +992,11 @@
           "type": "select",
           "required": false,
           "system": false,
-          "selectValues": ["grownups", "babies", "guardians"]
+          "selectValues": [
+            "grownups",
+            "babies",
+            "guardians"
+          ]
         },
         {
           "name": "image",
@@ -949,17 +1021,24 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
-      "indexes": ["CREATE INDEX idx_characters_order ON characters (sort_order)"]
+      "indexes": [
+        "CREATE INDEX idx_characters_order ON characters (sort_order)"
+      ]
     },
     {
       "name": "episodes",
@@ -1013,17 +1092,24 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
-      "indexes": ["CREATE INDEX idx_episodes_order ON episodes (sort_order)"]
+      "indexes": [
+        "CREATE INDEX idx_episodes_order ON episodes (sort_order)"
+      ]
     },
     {
       "name": "site_videos",
@@ -1083,17 +1169,24 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
-      "indexes": ["CREATE INDEX idx_site_videos_order ON site_videos (sort_order)"]
+      "indexes": [
+        "CREATE INDEX idx_site_videos_order ON site_videos (sort_order)"
+      ]
     },
     {
       "name": "social_links",
@@ -1159,17 +1252,24 @@
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate"]
+          "autodateTriggers": [
+            "onCreate"
+          ]
         },
         {
           "name": "updated",
           "type": "autodate",
           "required": false,
           "system": false,
-          "autodateTriggers": ["onCreate", "onUpdate"]
+          "autodateTriggers": [
+            "onCreate",
+            "onUpdate"
+          ]
         }
       ],
-      "indexes": ["CREATE INDEX idx_social_links_order ON social_links (sort_order)"]
+      "indexes": [
+        "CREATE INDEX idx_social_links_order ON social_links (sort_order)"
+      ]
     }
   ]
 }
