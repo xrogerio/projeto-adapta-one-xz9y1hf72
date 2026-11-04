@@ -14,16 +14,16 @@ export function SectionFields({ fields, values, onChange }: FieldsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {fields.map((f) => {
-        const full = f.type === 'textarea' || f.type === 'array'
+        const isMultiline = f.type === 'textarea' || f.type === 'array' || f.type === 'pairList'
         return (
-          <div key={f.name} className={full ? 'md:col-span-2 space-y-1.5' : 'space-y-1.5'}>
+          <div key={f.name} className={isMultiline ? 'md:col-span-2 space-y-1.5' : 'space-y-1.5'}>
             <Label htmlFor={`fld-${f.name}`} className="text-xs font-bold text-slate-600">
               {f.label}
             </Label>
-            {f.type === 'textarea' || f.type === 'array' ? (
+            {isMultiline ? (
               <Textarea
                 id={`fld-${f.name}`}
-                rows={f.type === 'array' ? 4 : 3}
+                rows={f.type === 'textarea' ? 3 : 4}
                 value={values[f.name] ?? ''}
                 onChange={(e) => onChange(f.name, e.target.value)}
                 placeholder={f.placeholder}
