@@ -89,8 +89,14 @@ export function useSectionForm(collectionName: string, fields: FieldConfig[]) {
     setError('')
     const { collectionName: col, fields: flds } = cfgRef.current
     try {
-      const list = await pb.collection(col).getList(1, 1, { sort: '-updated' })
-      const first = (list.items[0] ?? null) as unknown as AdminRecord | null
+      // Busca prioritariamente pelo registro principal (key = 'main')
+      let first: AdminRecord | null = null
+      try {
+        first = (await pb.collection(col).getFirstListItem('key="main"')) as unknown as AdminRecord
+      } catch {
+        const list = await pb.collection(col).getList(1, 1, { sort: '-updated' })
+        first = (list.items[0] ?? null) as unknown as AdminRecord | null
+      }
       recRef.current = first
       setRecord(first)
       setValues(extractValues(flds, first))
@@ -163,11 +169,26 @@ export function useSectionForm(collectionName: string, fields: FieldConfig[]) {
             adminSuccessToast('Seção já está atualizada!')
             return true
           }
+          try {
+            saved = (await pb
+              .collection(col)
+              .update(currentRec.id, payload)) as unknown as AdminRecord
+          } catch (updateErr) {
+            // Se o registro não foi encontrado pelo id em memória, tenta buscar o atual por key="main"
+            const status = (updateErr as { status?: number })?.status
+            if (status === 404) {
+              const fresh = (await pb
+                .collection(col)
+                .getFirstListItem('key="main"')) as unknown as AdminRecord
+              saved = (await pb.collection(col).update(fresh.id, payload)) as unknown as AdminRecord
+            } else {
+              throw updateErr
+            }
+          }
+        } else {
           saved = (await pb
             .collection(col)
-            .update(currentRec.id, payload)) as unknown as AdminRecord
-        } else {
-          saved = (await pb.collection(col).create(payload)) as unknown as AdminRecord
+            .create({ key: 'main', ...payload })) as unknown as AdminRecord
         }
         recRef.current = saved
         setRecord(saved)
@@ -206,7 +227,19 @@ export function useSectionForm(collectionName: string, fields: FieldConfig[]) {
         } else {
           formData.append(field, '') // valor vazio limpa o campo no PocketBase
         }
-        await pb.collection(cfgRef.current.collectionName).update(current.id, formData)
+        try {
+          await pb.collection(cfgRef.current.collectionName).update(current.id, formData)
+        } catch (uploadErr) {
+          const status = (uploadErr as { status?: number })?.status
+          if (status === 404) {
+            const fresh = (await pb
+              .collection(cfgRef.current.collectionName)
+              .getFirstListItem('key="main"')) as unknown as AdminRecord
+            await pb.collection(cfgRef.current.collectionName).update(fresh.id, formData)
+          } else {
+            throw uploadErr
+          }
+        }
         await load()
         adminSuccessToast(file ? 'Imagem atualizada!' : 'Imagem removida!')
         return true

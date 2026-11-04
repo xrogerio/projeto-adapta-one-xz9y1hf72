@@ -287,33 +287,20 @@ export default function AdminPanel() {
     market: marketForm,
   }
 
-  const saveMap: Record<string, () => Promise<boolean>> = {
-    menu: () => menuForm.save(),
-    footer: () => footerForm.save(),
-    hero: () => heroForm.save(),
-    about: () => aboutForm.save(),
-    characters: async () => true, // listas salvam item por item
-    episodes: async () => true,
-    soundtrack: () => soundtrackForm.save(),
-    social: () => socialForm.save(),
-    market: () => marketForm.save(),
-  }
-
   const [savingTab, setSavingTab] = useState<string | null>(null)
 
   const saveCurrent = useCallback(
     async (tab: string) => {
-      const fn = saveMap[tab]
-      if (!fn) return
+      const form = sectionForms[tab]
+      if (!form) return
       setSavingTab(tab)
       try {
-        await fn()
+        await form.save()
       } finally {
         setSavingTab(null)
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [sectionForms],
   )
 
   return (
