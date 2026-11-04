@@ -8,9 +8,15 @@ import type { AdminRecord } from '@/hooks/useAdminCollection'
 export interface FieldConfig {
   name: string
   label: string
-  /** textarea = multilinha; array = lista (um item por linha). */
-  type?: 'text' | 'textarea' | 'array' | 'number' | 'url' | 'email'
+  /**
+   * textarea = multilinha; array = lista de textos (um item por linha);
+   * pairList = lista de objetos json (cada linha vira um objeto com as
+   * chaves de `pairKeys`, separadas por " | ").
+   */
+  type?: 'text' | 'textarea' | 'array' | 'pairList' | 'number' | 'url' | 'email'
   placeholder?: string
+  /** Chaves do objeto json quando type === 'pairList'. */
+  pairKeys?: string[]
 }
 
 /** Extrai os valores dos campos declarados a partir do registro. */
@@ -23,6 +29,17 @@ export function extractValues(
     const raw = rec ? rec[f.name] : undefined
     if (f.type === 'array') {
       next[f.name] = Array.isArray(raw) ? raw.map(String).join('\n') : ''
+    } else if (f.type === 'pairList') {
+      const keys = f.pairKeys ?? []
+      next[f.name] = Array.isArray(raw)
+        ? raw
+            .map((item) => {
+              const obj = (item ?? {}) as Record<string, unknown>
+              return keys.map((k) => String(obj[k] ?? '')).join(' | ')
+            })
+            .filter((line) => line.replace(/\s*\|/g, '').length > 0)
+            .join('\n')
+        : ''
     } else {
       next[f.name] = typeof raw === 'string' ? raw : raw == null ? '' : String(raw)
     }
@@ -36,6 +53,18 @@ export function splitLines(text: string): string[] {
     .split('\n')
     .map((s) => s.trim())
     .filter((s) => s.length > 0)
+}
+
+/** Converte as linhas "a | b | c" em objetos json com as chaves informadas. */
+export function parsePairLines(text: string, keys: string[]): Record<string, string>[] {
+  return splitLines(text).map((line) => {
+    const parts = line.split('|').map((p) => p.trim())
+    const obj: Record<string, string> = {}
+    keys.forEach((k, i) => {
+      obj[k] = parts[i] ?? ''
+    })
+    return obj
+  })
 }
 
 /**
@@ -90,7 +119,11 @@ export function useSectionForm(collectionName: string, fields: FieldConfig[]) {
         for (const f of flds) {
           if (extra && f in extra) continue
           const v = values[f.name] ?? ''
-          payload[f.name] = f.type === 'array' ? splitLines(v) : v
+          if (f.type === 'pairList') {
+            payload[f.name] = parsePairLines(v, f.pairKeys ?? [])
+          } else {
+            payload[f.name] = f.type === 'array' ? splitLines(v) : v
+          }
         }
         let saved: AdminRecord
         if (recRef.current) {
