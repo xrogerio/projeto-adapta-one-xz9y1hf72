@@ -79,7 +79,7 @@ const HERO_CONFIG: SectionConfig = {
   tabLabel: 'Início',
   title: 'Início (herói)',
   description: 'Textos da primeira dobra do site e a imagem exibida ao lado do título.',
-  collection: 'site_hero',
+  collection: 'hero',
   imageField: 'image',
   imageLabel: 'Imagem do herói (Início)',
   imagePreviewClass: 'w-40 h-40',
@@ -103,7 +103,7 @@ const ABOUT_CONFIG: SectionConfig = {
   tabLabel: 'Sobre a série',
   title: 'Sobre a série',
   description: 'Textos, chips e destaques da seção Sobre a série.',
-  collection: 'site_about',
+  collection: 'about',
   fields: [
     { name: 'sectionEyebrow', label: 'Rótulo da seção' },
     { name: 'sectionTitle', label: 'Título da seção' },
@@ -125,7 +125,7 @@ const SOUNDTRACK_CONFIG: SectionConfig = {
   tabLabel: 'Trilha sonora',
   title: 'Trilha sonora',
   description: 'Textos, citação e cards da seção de música.',
-  collection: 'site_soundtrack',
+  collection: 'soundtrack',
   fields: [
     { name: 'sectionEyebrow', label: 'Rótulo da seção' },
     { name: 'sectionTitle', label: 'Título da seção' },
@@ -155,7 +155,7 @@ const SOCIAL_CONFIG: SectionConfig = {
   tabLabel: 'Siga a série',
   title: 'Siga a série',
   description: 'Perfis oficiais exibidos na seção de redes sociais.',
-  collection: 'site_social',
+  collection: 'social',
   fields: [
     { name: 'sectionEyebrow', label: 'Rótulo da seção' },
     { name: 'sectionTitle', label: 'Título da seção' },
@@ -184,7 +184,7 @@ const MARKET_CONFIG: SectionConfig = {
   tabLabel: 'Mercado',
   title: 'Para o mercado audiovisual',
   description: 'Textos da seção voltada a produtoras e plataformas.',
-  collection: 'site_market',
+  collection: 'market',
   fields: [
     { name: 'sectionEyebrow', label: 'Rótulo da seção' },
     { name: 'sectionTitle', label: 'Título da seção' },
