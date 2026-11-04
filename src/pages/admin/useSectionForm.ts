@@ -112,6 +112,10 @@ export function useSectionForm(collectionName: string, fields: FieldConfig[]) {
   /** Salva os campos declarados no registro (ou cria, se não existir). */
   const save = useCallback(
     async (extra?: Record<string, unknown>) => {
+      if (error) {
+        adminErrorToast('Não foi possível carregar os dados atuais — recarregue antes de salvar.')
+        return false
+      }
       setSaving(true)
       const { collectionName: col, fields: flds } = cfgRef.current
       try {
@@ -145,12 +149,18 @@ export function useSectionForm(collectionName: string, fields: FieldConfig[]) {
         setSaving(false)
       }
     },
-    [values],
+    [values, error],
   )
 
   /** Substitui (File) ou remove (null) o arquivo de um campo file. */
   const saveFile = useCallback(
     async (field: string, file: File | null) => {
+      if (error) {
+        adminErrorToast(
+          'Não foi possível carregar os dados atuais — recarregue antes de enviar imagem.',
+        )
+        return false
+      }
       const current = recRef.current
       if (!current) {
         adminErrorToast('Salve a seção antes de enviar a imagem.')

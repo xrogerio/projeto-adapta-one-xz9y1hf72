@@ -79,13 +79,21 @@ export default function SingletonSection({
 }
 
 /** Botão Salvar padrão dos formulários singleton. */
-export function SaveButton({ saving, onSave }: { saving: boolean; onSave: () => void }) {
+export function SaveButton({
+  saving,
+  disabled,
+  onSave,
+}: {
+  saving: boolean
+  disabled?: boolean
+  onSave: () => void
+}) {
   return (
     <Button
       type="button"
-      disabled={saving}
+      disabled={saving || disabled}
       onClick={onSave}
-      className="rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white font-bold gap-2"
+      className="rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white font-bold gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {saving && <Loader2 className="w-4 h-4 animate-spin" />}
       Salvar

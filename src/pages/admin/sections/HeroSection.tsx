@@ -13,8 +13,6 @@ import type { FieldConfig } from '@/pages/admin/useSectionForm'
 const COLLECTION = 'hero'
 
 const FIELDS: FieldConfig[] = [
-  { name: 'bannerBadge', label: 'Selo (badge) do topo' },
-  { name: 'bannerTagline', label: 'Frase de apoio do topo' },
   { name: 'badge', label: 'Selo do herói' },
   { name: 'titleMain', label: 'Título principal' },
   { name: 'titleSub', label: 'Subtítulo' },
@@ -46,9 +44,9 @@ export default function HeroSection() {
       </span>
       <Button
         type="button"
-        disabled={form.saving}
+        disabled={form.saving || Boolean(form.error)}
         onClick={() => form.save()}
-        className="rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white font-bold gap-2"
+        className="rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white font-bold gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {form.saving && <Loader2 className="w-4 h-4 animate-spin" />}
         Salvar

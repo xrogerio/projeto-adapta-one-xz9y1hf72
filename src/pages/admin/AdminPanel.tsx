@@ -368,7 +368,11 @@ export default function AdminPanel() {
                 <div className="space-y-4">
                   <SingletonSection config={CONFIG_BY_TAB[tab]} form={sectionForms[tab]} />
                   <div className="flex justify-end">
-                    <SaveButton saving={savingTab === tab} onSave={() => saveCurrent(tab)} />
+                    <SaveButton
+                      saving={savingTab === tab}
+                      disabled={Boolean(sectionForms[tab]?.error)}
+                      onSave={() => saveCurrent(tab)}
+                    />
                   </div>
                 </div>
               )}
