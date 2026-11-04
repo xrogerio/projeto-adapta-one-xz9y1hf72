@@ -119,21 +119,53 @@ export function useSectionForm(collectionName: string, fields: FieldConfig[]) {
       setSaving(true)
       const { collectionName: col, fields: flds } = cfgRef.current
       try {
-        const payload: Record<string, unknown> = { ...extra }
+        const currentRec = recRef.current
+        const rawPayload: Record<string, unknown> = { ...extra }
         for (const f of flds) {
           if (extra && f.name in extra) continue
           const v = values[f.name] ?? ''
           if (f.type === 'pairList') {
-            payload[f.name] = parsePairLines(v, f.pairKeys ?? [])
+            rawPayload[f.name] = parsePairLines(v, f.pairKeys ?? [])
           } else {
-            payload[f.name] = f.type === 'array' ? splitLines(v) : v
+            rawPayload[f.name] = f.type === 'array' ? splitLines(v) : v
           }
         }
+
+        // Blindagem contra gravação de valores nulos/vazios por cima de valores existentes
+        const payload: Record<string, unknown> = {}
+        for (const [key, newVal] of Object.entries(rawPayload)) {
+          if (currentRec) {
+            const currentVal = currentRec[key]
+            const isCurrentFilled =
+              currentVal !== undefined &&
+              currentVal !== null &&
+              currentVal !== '' &&
+              !(Array.isArray(currentVal) && currentVal.length === 0)
+
+            const isNewEmpty =
+              newVal === undefined ||
+              newVal === null ||
+              (typeof newVal === 'string' && newVal.trim() === '') ||
+              (Array.isArray(newVal) && newVal.length === 0)
+
+            // Se o banco já tem valor e o formulário está vazio/nulo/indefinido, não zera o banco
+            if (isCurrentFilled && isNewEmpty) {
+              continue
+            }
+          }
+          payload[key] = newVal
+        }
+
         let saved: AdminRecord
-        if (recRef.current) {
+        if (currentRec) {
+          // Se não houver campos a atualizar, não precisa disparar update vazio
+          if (Object.keys(payload).length === 0) {
+            adminSuccessToast('Seção já está atualizada!')
+            return true
+          }
           saved = (await pb
             .collection(col)
-            .update(recRef.current.id, payload)) as unknown as AdminRecord
+            .update(currentRec.id, payload)) as unknown as AdminRecord
         } else {
           saved = (await pb.collection(col).create(payload)) as unknown as AdminRecord
         }

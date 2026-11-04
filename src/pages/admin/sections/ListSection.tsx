@@ -19,7 +19,7 @@ export interface ListSectionConfig {
 export function filePreviewUrl(collection: string, id: string, filename: unknown): string {
   const name = typeof filename === 'string' ? filename : ''
   if (!id || !name) return ''
-  return pb.files.getUrl(
+  return pb.files.getURL(
     { id, collectionId: collection, collectionName: collection } as never,
     name,
   )

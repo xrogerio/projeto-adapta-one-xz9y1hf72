@@ -6,7 +6,7 @@ import pb from '@/lib/pocketbase/client'
 /** URL pública de um arquivo do PocketBase (ou '' quando não há arquivo). */
 export function adminFileUrl(collectionName: string, recordId: string, filename: string): string {
   if (!recordId || !filename) return ''
-  return pb.files.getUrl(
+  return pb.files.getURL(
     { id: recordId, collectionId: collectionName, collectionName } as never,
     filename,
   )

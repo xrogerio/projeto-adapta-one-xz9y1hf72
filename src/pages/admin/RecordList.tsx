@@ -105,9 +105,40 @@ export function RecordList({
 
   const saveEdit = useCallback(async () => {
     if (!editingId) return
+    if (error) {
+      adminErrorToast('Não foi possível carregar os dados atuais — recarregue antes de salvar.')
+      return
+    }
     setBusy(true)
     try {
-      await pb.collection(collectionName).update(editingId, draft)
+      const currentRec = records.find((r) => r.id === editingId)
+      // Blindagem genérica: omite campos vazios/nulos quando a coluna já possui valor
+      const payload: Record<string, unknown> = {}
+      for (const [key, newVal] of Object.entries(draft)) {
+        if (currentRec) {
+          const currentVal = currentRec[key]
+          const isCurrentFilled =
+            currentVal !== undefined &&
+            currentVal !== null &&
+            currentVal !== '' &&
+            !(Array.isArray(currentVal) && currentVal.length === 0)
+
+          const isNewEmpty =
+            newVal === undefined ||
+            newVal === null ||
+            (typeof newVal === 'string' && newVal.trim() === '') ||
+            (Array.isArray(newVal) && newVal.length === 0)
+
+          if (isCurrentFilled && isNewEmpty) {
+            continue
+          }
+        }
+        payload[key] = newVal
+      }
+
+      if (Object.keys(payload).length > 0) {
+        await pb.collection(collectionName).update(editingId, payload)
+      }
       adminSuccessToast('Item atualizado!')
       setEditingId(null)
       reload()
@@ -116,9 +147,13 @@ export function RecordList({
     } finally {
       setBusy(false)
     }
-  }, [collectionName, editingId, draft, reload])
+  }, [collectionName, editingId, draft, records, error, reload])
 
   const addItem = useCallback(async () => {
+    if (error) {
+      adminErrorToast('Não foi possível carregar os dados atuais — recarregue antes de adicionar.')
+      return
+    }
     setBusy(true)
     try {
       // Novo item vai para o fim da lista.
@@ -134,7 +169,7 @@ export function RecordList({
     } finally {
       setBusy(false)
     }
-  }, [collectionName, draft, records, sortField, reload])
+  }, [collectionName, draft, records, sortField, error, reload])
 
   const removeItem = useCallback(
     async (id: string) => {
