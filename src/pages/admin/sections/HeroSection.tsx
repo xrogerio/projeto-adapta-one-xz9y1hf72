@@ -10,7 +10,7 @@ import { useSectionForm } from '@/pages/admin/useSectionForm'
 import { useAdminCollection } from '@/hooks/useAdminCollection'
 import type { FieldConfig } from '@/pages/admin/useSectionForm'
 
-const COLLECTION = 'site_hero'
+const COLLECTION = 'hero'
 
 const FIELDS: FieldConfig[] = [
   { name: 'bannerBadge', label: 'Selo (badge) do topo' },
