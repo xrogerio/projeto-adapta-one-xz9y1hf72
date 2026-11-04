@@ -1,7 +1,34 @@
+import { useCallback, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import pb from '@/lib/pocketbase/client'
 
 /** Registro genérico do painel (qualquer coleção do site). */
 export type AdminRecord = Record<string, unknown> & { id: string; collectionId?: string }
+
+/**
+ * Hook de sessão do painel: expõe o usuário autenticado do authStore
+ * e o logout (limpa a sessão e volta para /admin/login).
+ */
+export function useAdminAuth() {
+  const navigate = useNavigate()
+  const [admin, setAdmin] = useState<AdminRecord | null>(() =>
+    isMaybeValidAdmin() ? (pb.authStore.record as AdminRecord | null) : null,
+  )
+
+  useEffect(() => {
+    const unsubscribe = pb.authStore.onChange(() => {
+      setAdmin(isMaybeValidAdmin() ? (pb.authStore.record as AdminRecord | null) : null)
+    })
+    return unsubscribe
+  }, [])
+
+  const logout = useCallback(() => {
+    logoutAdmin()
+    navigate('/admin/login', { replace: true })
+  }, [navigate])
+
+  return { admin, logout }
+}
 
 /** Toast de sucesso do painel (mensagens curtas e neutras). */
 export function adminSuccessToast(message: string) {

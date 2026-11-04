@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import pb from '@/lib/pocketbase/client'
 import { getErrorMessage } from '@/lib/pocketbase/errors'
 import { adminSuccessToast, adminErrorToast } from '@/pages/admin/adminHelpers'
-import type { AdminRecord } from '@/hooks/useAdminCollection'
+import type { AdminRecord } from '@/services/adminAuth'
 
 /** Configuração de campo: nome, rótulo e tipo de editor. */
 export interface FieldConfig {
@@ -117,7 +117,7 @@ export function useSectionForm(collectionName: string, fields: FieldConfig[]) {
       try {
         const payload: Record<string, unknown> = { ...extra }
         for (const f of flds) {
-          if (extra && f in extra) continue
+          if (extra && f.name in extra) continue
           const v = values[f.name] ?? ''
           if (f.type === 'pairList') {
             payload[f.name] = parsePairLines(v, f.pairKeys ?? [])

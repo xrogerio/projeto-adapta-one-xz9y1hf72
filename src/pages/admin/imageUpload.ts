@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import pb from '@/lib/pocketbase/client'
-import type { AdminRecord } from '@/hooks/useAdminCollection'
+import type { AdminRecord } from '@/services/adminAuth'
 
 /**
  * Upload de arquivo para um registro do PocketBase a partir de um

@@ -346,7 +346,7 @@ export default function AdminPanel() {
                 Freddie <span className="text-orange-500">&</span> Lolla — Painel
               </h1>
               <p className="text-xs text-slate-500 truncate">
-                {admin?.name || 'Administrador'} · {admin?.email}
+                {String(admin?.name ?? '') || 'Administrador'} · {String(admin?.email ?? '')}
               </p>
             </div>
           </div>

@@ -57,7 +57,7 @@ const SOCIAL_COLORS: Record<string, { box: string; hover: string; title: string 
 
 export default function Layout() {
   const site = useSiteData()
-  const { menu, footer, social } = site
+  const { menu, footer, socialLinks } = site
 
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -117,7 +117,7 @@ export default function Layout() {
   }
 
   const navItems = menu.items
-  const instagramLink = social.links.find((l) => l.platform.toLowerCase().includes('insta'))
+  const instagramLink = socialLinks.find((l) => l.platform.toLowerCase().includes('insta'))
 
   return (
     <div className="flex flex-col min-h-screen text-slate-900 bg-slate-50 selection:bg-sky-200 selection:text-sky-900">
@@ -336,7 +336,7 @@ export default function Layout() {
                 {footer.socialTitle}
               </h4>
               <ul className="space-y-3 text-sm">
-                {social.links.map((link) => {
+                {socialLinks.map((link) => {
                   const key = link.platform.toLowerCase()
                   const Icon = SOCIAL_ICONS[key] ?? Instagram
                   const colors = SOCIAL_COLORS[key] ?? SOCIAL_COLORS.instagram

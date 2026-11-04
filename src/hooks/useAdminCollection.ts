@@ -20,7 +20,7 @@ export function useAdminCollection(collectionName: string, sort = '-updated', as
       const list = await pb.collection(collectionName).getFullList({
         sort,
       })
-      const rows = list.items as unknown as AdminRecord[]
+      const rows = list as unknown as AdminRecord[]
       setRecords(ascending ? rows.slice().reverse() : rows)
     } catch (err) {
       setError(getErrorMessage(err))

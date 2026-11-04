@@ -7,6 +7,20 @@ import pb from '@/lib/pocketbase/client'
 import { SITE_DATA } from '@/data/siteContent'
 import { SITE_CHROME } from '@/data/siteChrome'
 
+/** Agrupamento padrão dos personagens estáticos (fallback sem backend). */
+const CHAR_GROUPS: Record<string, string> = {
+  lilly: 'babies',
+  pimpi: 'babies',
+  popo: 'babies',
+  freddie: 'grownups',
+  lolla: 'grownups',
+  atlas: 'grownups',
+  amelia: 'grownups',
+  aurora: 'guardians',
+  hugo: 'guardians',
+  bel: 'guardians',
+}
+
 export interface CharacterRow {
   id: string
   slug: string
@@ -173,7 +187,10 @@ function asStringArray(value: unknown, fallback: string[]): string[] {
   return fallback
 }
 
-function asObjectArray(value: unknown, fallback: unknown[]): Record<string, unknown>[] {
+function asObjectArray(
+  value: unknown,
+  fallback: Record<string, unknown>[] = [],
+): Record<string, unknown>[] {
   if (Array.isArray(value)) {
     const arr = value.filter((v) => v && typeof v === 'object') as Record<string, unknown>[]
     return arr.length ? arr : fallback
@@ -249,7 +266,7 @@ export function buildStaticSiteData(): SiteData {
       description: c.description,
       avatarType: c.avatarType,
       accentColor: c.accentColor,
-      charGroup: c.charGroup,
+      charGroup: CHAR_GROUPS[c.id] ?? 'grownups',
       image: '',
     })),
     episodesSection: {
@@ -293,7 +310,7 @@ export function buildStaticSiteData(): SiteData {
       label: l.label,
       url: l.url,
       color: l.color,
-      footerNote: l.footerNote,
+      footerNote: '',
     })),
     market: {
       sectionEyebrow: d.market.sectionEyebrow,
@@ -311,7 +328,7 @@ export function buildStaticSiteData(): SiteData {
       ctaText: d.market.ctaText,
       ctaLabel: d.market.ctaLabel,
       ctaEmail: d.market.ctaEmail,
-      ctaUrl: d.market.ctaUrl,
+      ctaUrl: '',
     },
   }
 }
@@ -549,8 +566,8 @@ export async function loadSiteData(): Promise<SiteData> {
         description: asString(r.description, ''),
         avatarType: asString(r.avatarType, 'penguin-boy'),
         accentColor: asString(r.accentColor, '#0ea5e9'),
-        charGroup: asString(r.charGroup, 'grownups'),
-        image: filesUrl('characters', asString(r.image, '')),
+        charGroup: asString(r.charGroup, CHAR_GROUPS[asString(r.slug, '')] ?? 'grownups'),
+        image: filesUrl('characters', asString(r.id, ''), asString(r.image, '')),
       }),
     )
     if (charRows.length) base.characters = charRows
